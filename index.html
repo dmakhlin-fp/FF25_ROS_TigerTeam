@@ -5,29 +5,199 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Conference Run of Show</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 0; background: #f9fafc; color: #333; }
-    header { background: #2c3e50; color: white; padding: 1rem; text-align: center; }
-    nav { margin-top: 1rem; }
-    nav button { margin: 0.3rem; padding: 0.6rem 1rem; border: none; background: #3498db; color: white; border-radius: 5px; cursor: pointer; }
-    nav button.active { background: #1abc9c; }
-    .schedule-day { max-width: 900px; margin: 2rem auto; padding: 0 1rem; }
-    .event { background: white; padding: 1rem; margin: 0.5rem 0; border-left: 5px solid #3498db; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,.1); }
-    .event h3 { margin: 0; }
-    .event small { color: #777; }
+    :root {
+      --primary: #0a84ff; /* Apple-like blue */
+      --accent: #00a699;  /* Airbnb green */
+      --bg: #f9fafc;
+      --text: #333;
+    }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    /* -------- PASSWORD SCREEN -------- */
+    #login-screen {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #ffffff, #f0f4f8);
+    }
+
+    .login-box {
+      background: #fff;
+      padding: 3rem;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+      text-align: center;
+      width: 100%;
+      max-width: 360px;
+      transition: all 0.3s ease;
+    }
+
+    .login-box h1 {
+      font-size: 1.8rem;
+      margin-bottom: 1.5rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .login-box input {
+      width: 100%;
+      padding: 0.9rem;
+      margin-bottom: 1rem;
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      font-size: 1rem;
+      outline: none;
+      transition: border 0.2s;
+    }
+
+    .login-box input:focus {
+      border-color: var(--primary);
+    }
+
+    .login-box button {
+      width: 100%;
+      padding: 0.9rem;
+      border: none;
+      background: var(--primary);
+      color: white;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .login-box button:hover {
+      background: #0071e3;
+    }
+
+    .error-msg {
+      color: red;
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+    }
+
+    /* -------- MAIN APP -------- */
+    #app {
+      display: none;
+    }
+
+    header {
+      background: white;
+      padding: 1rem;
+      text-align: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    header h1 {
+      margin: 0.5rem 0;
+      font-weight: 600;
+    }
+
+    nav {
+      margin-top: 0.5rem;
+    }
+
+    nav button {
+      margin: 0.2rem;
+      padding: 0.6rem 1rem;
+      border: none;
+      background: var(--primary);
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: background 0.2s;
+    }
+
+    nav button:hover { background: #0071e3; }
+    nav button.active { background: var(--accent); }
+
+    .schedule-day {
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+
+    .event {
+      background: white;
+      padding: 1.2rem;
+      margin: 1rem 0;
+      border-left: 5px solid var(--primary);
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,.05);
+      transition: transform 0.2s;
+    }
+
+    .event:hover {
+      transform: translateY(-4px);
+    }
+
+    .event h3 {
+      margin: 0 0 0.3rem 0;
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+
+    .event small {
+      color: #666;
+      display: block;
+      margin-bottom: 0.6rem;
+    }
+
+    .event p {
+      margin: 0.2rem 0;
+      font-size: 0.95rem;
+    }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Conference Run of Show</h1>
-    <nav id="day-nav"></nav>
-  </header>
-  <main id="schedule"></main>
+
+  <!-- 🔒 Password Gate -->
+  <div id="login-screen">
+    <div class="login-box">
+      <h1>Enter Access Code</h1>
+      <input type="password" id="password" placeholder="Password" />
+      <button onclick="checkPassword()">Unlock</button>
+      <div class="error-msg" id="error"></div>
+    </div>
+  </div>
+
+  <!-- 📅 Main App -->
+  <div id="app">
+    <header>
+      <h1>Conference Run of Show</h1>
+      <nav id="day-nav"></nav>
+    </header>
+    <main id="schedule"></main>
+  </div>
 
   <script>
+    const PASSWORD = "FORWARD25"; // 🔑 set your password here
+    function checkPassword() {
+      const input = document.getElementById("password").value;
+      const error = document.getElementById("error");
+      if (input === PASSWORD) {
+        document.getElementById("login-screen").style.display = "none";
+        document.getElementById("app").style.display = "block";
+      } else {
+        error.textContent = "Incorrect password. Try again.";
+      }
+    }
+
     // 👉 replace this with your Google Apps Script Web App URL
     const sheetUrl = "https://script.googleusercontent.com/a/macros/flexport.com/echo?user_content_key=AehSKLiQNfDEP2dqZl6jX9VnYNcDtCvSciwScIUHDgcMVeVoXakgw7CIyktLH_kgYeLkrnFG7wguyLXXOQYvG13V6Zu74UzgoDhMuphNT-yn8rkJ37VPSp7seYpY-jTP-ZI_IY4gkGhdbTk9KLKt2J2vbLyIIXwH_2L84VAHqI12XlSC1YL422F94E8huqqulkDFGTDczEUongzHOxfxYiBfbJcsAMW9gzgDMN5cZlqQommnb_TfyjId6T8rIx5fNwcU2NZTgtbxW-0JX39QRZg&lib=Moftsz8O_3FnQeQmqW7QGxSuhMqpg5Jk9";
 
-    // Helper to format Excel-ish ISO date strings into nice Times
     function formatTime(value) {
       if (!value || value === "TBD") return "TBD";
       try {
@@ -36,7 +206,7 @@
           return date.toLocaleTimeString([], {hour: 'numeric', minute:'2-digit'});
         }
       } catch(e) {}
-      return value; // fallback
+      return value;
     }
 
     function formatDate(value) {
@@ -52,18 +222,14 @@
     async function loadData() {
       const response = await fetch(sheetUrl);
       const data = await response.json();
-
-      // Group by Date
       const grouped = {};
       data.forEach(evt => {
         const day = formatDate(evt["Date"]);
         if (!grouped[day]) grouped[day] = [];
         grouped[day].push(evt);
       });
-
       const dayNav = document.getElementById("day-nav");
       dayNav.innerHTML = "";
-
       Object.keys(grouped).forEach((day, index) => {
         const btn = document.createElement("button");
         btn.textContent = day;
@@ -71,20 +237,17 @@
         if (index === 0) btn.classList.add("active");
         dayNav.appendChild(btn);
       });
-
       showDay(Object.keys(grouped)[0], grouped);
     }
 
     function showDay(day, grouped) {
       const schedule = document.getElementById("schedule");
-      schedule.innerHTML = `<h2>${day}</h2>`;
-
+      schedule.innerHTML = `<h2 style="text-align:center; margin-top:1.5rem;">${day}</h2>`;
       document.querySelectorAll("nav button").forEach(btn => btn.classList.remove("active"));
       [...document.querySelectorAll("nav button")].find(btn => btn.textContent === day).classList.add("active");
 
       const container = document.createElement("div");
       container.classList.add("schedule-day");
-
       grouped[day].forEach(evt => {
         const div = document.createElement("div");
         div.classList.add("event");
@@ -99,11 +262,22 @@
         `;
         container.appendChild(div);
       });
-
       schedule.appendChild(container);
     }
 
-    loadData();
+    // ⚡ load schedule after unlock
+    // It won’t run until password screen is passed
+    window.checkPassword = function() {
+      const input = document.getElementById("password").value;
+      const error = document.getElementById("error");
+      if (input === PASSWORD) {
+        document.getElementById("login-screen").style.display = "none";
+        document.getElementById("app").style.display = "block";
+        loadData();
+      } else {
+        error.textContent = "Incorrect password. Try again.";
+      }
+    };
   </script>
 </body>
 </html>
