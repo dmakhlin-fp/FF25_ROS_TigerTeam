@@ -1,242 +1,216 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Conference Run of Show</title>
-  <style>
-    :root {
-      --primary: #0a84ff; /* Apple-like blue */
-      --accent: #00a699;  /* Airbnb green */
-      --bg: #f9fafc;
-      --text: #333;
-    }
+<meta charset="UTF-8">
+<title>Conference Run of Show</title>
+<style>
+  body {
+    margin:0;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    background:#f9fafc;
+    color:#333;
+  }
 
-    body {
-      margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-    }
+  /* Login Screen Styles */
+  #login {
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+    background:linear-gradient(135deg,#fff,#f0f4f8);
+  }
+  .box {
+    background:#fff;
+    padding:3rem;
+    border-radius:16px;
+    box-shadow:0 8px 24px rgba(0,0,0,0.1);
+    max-width:360px;
+    width:100%;
+    text-align:center;
+  }
+  .box h2 {
+    margin-bottom:1.5rem;
+    font-weight:600;
+  }
 
-    /* Password Screen */
-    #login-screen {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      background: linear-gradient(135deg, #ffffff, #f0f4f8);
-    }
+  /* Input + Button unified size */
+  .box input,
+  .box button {
+    display:block;
+    width:100%;
+    box-sizing:border-box;
+    padding:0.9rem;
+    margin:0.5rem 0;
+    border-radius:8px;
+    font-size:1rem;
+    font-family:inherit;
+  }
 
-    .login-box {
-      background: #fff;
-      padding: 3rem;
-      border-radius: 16px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-      text-align: center;
-      width: 100%;
-      max-width: 360px;
-    }
+  .box input {
+    border:1px solid #ddd;
+  }
 
-    .login-box h1 {
-      font-size: 1.8rem;
-      margin-bottom: 1.5rem;
-      font-weight: 600;
-    }
+  .box button {
+    border:none;
+    background:#0a84ff;
+    color:white;
+    font-weight:600;
+    cursor:pointer;
+    transition:background 0.2s;
+  }
 
-    .login-box input {
-      width: 100%;
-      padding: 0.9rem;
-      margin-bottom: 1rem;
-      border: 1px solid #ddd;
-      border-radius: 12px;
-      font-size: 1rem;
-    }
+  .box button:hover {
+    background:#0071e3;
+  }
 
-    .login-box input:focus { border-color: var(--primary); }
+  .error-msg {
+    color:red;
+    font-size:0.9rem;
+    margin-top:0.5rem;
+  }
 
-    .login-box button {
-      width: 100%;
-      padding: 0.9rem;
-      border: none;
-      background: var(--primary);
-      color: white;
-      border-radius: 12px;
-      font-size: 1rem;
-      font-weight: 600;
-      cursor: pointer;
-    }
-
-    .login-box button:hover { background: #0071e3; }
-
-    .error-msg { color: red; font-size: 0.9rem; margin-top: 0.5rem; }
-
-    /* Main App */
-    #app { display: none; }
-
-    header {
-      background: white;
-      padding: 1rem;
-      text-align: center;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-      position: sticky;
-      top: 0;
-    }
-
-    header h1 { margin: 0.5rem 0; font-weight: 600; }
-
-    nav { margin-top: 0.5rem; }
-
-    nav button {
-      margin: 0.2rem;
-      padding: 0.6rem 1rem;
-      border: none;
-      background: var(--primary);
-      color: white;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 0.9rem;
-    }
-
-    nav button.active { background: var(--accent); }
-
-    .schedule-day {
-      max-width: 900px;
-      margin: 2rem auto;
-      padding: 0 1rem;
-    }
-
-    .event {
-      background: white;
-      padding: 1.2rem;
-      margin: 1rem 0;
-      border-left: 5px solid var(--primary);
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,.05);
-    }
-
-    .event h3 { margin: 0 0 0.3rem 0; font-size: 1.2rem; font-weight: 600; }
-    .event small { color: #666; display: block; margin-bottom: 0.6rem; }
-    .event p { margin: 0.2rem 0; font-size: 0.95rem; }
-  </style>
+  /* App Styles */
+  #app { display:none; }
+  header {
+    background:#fff;
+    box-shadow:0 2px 4px rgba(0,0,0,0.1);
+    padding:1rem;
+    text-align:center;
+  }
+  header h1 {
+    margin:0.5rem 0;
+    font-weight:600;
+  }
+  nav button {
+    margin:0.2rem;
+    padding:0.6rem 1rem;
+    border:none;
+    border-radius:6px;
+    background:#0a84ff;
+    color:#fff;
+    cursor:pointer;
+  }
+  nav button.active { background:#00a699; }
+  .day { max-width:900px; margin:2rem auto; }
+  .event {
+    background:#fff;
+    padding:1rem;
+    margin:0.5rem 0;
+    border-left:5px solid #0a84ff;
+    border-radius:8px;
+    box-shadow:0 2px 6px rgba(0,0,0,0.05);
+  }
+  .event h3 { margin:0 0 0.3rem; font-size:1.2rem; font-weight:600; }
+  .event small { color:#666; display:block; margin-bottom:0.6rem; }
+  .event p { margin:0.2rem 0; font-size:0.95rem; }
+</style>
 </head>
 <body>
 
-  <!-- 🔒 Password Screen -->
-  <div id="login-screen">
-    <div class="login-box">
-      <h1>Enter Access Code</h1>
-      <input type="password" id="password" placeholder="Password" />
-      <button onclick="checkPassword()">Unlock</button>
-      <div class="error-msg" id="error"></div>
-    </div>
+<!-- 🔒 Login Screen -->
+<div id="login">
+  <div class="box">
+    <h2>Enter Access Code</h2>
+    <input type="password" id="pw" placeholder="Password">
+    <button onclick="unlock()">Unlock</button>
+    <p id="err" class="error-msg"></p>
   </div>
+</div>
 
-  <!-- 📅 Main App -->
-  <div id="app">
-    <header>
-      <h1>Conference Run of Show</h1>
-      <nav id="day-nav"></nav>
-    </header>
-    <main id="schedule"></main>
-  </div>
+<!-- 📅 App -->
+<div id="app">
+  <header>
+    <h1>Conference Run of Show</h1>
+    <nav id="day-nav"></nav>
+  </header>
+  <main id="schedule"></main>
+</div>
 
-  <script>
-    const PASSWORD = "FORWARD25"; // Frontend entry password
+<script>
+const PASSWORD = "FORWARD25";
+// Published CSV link from your Google Sheet:
+const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR8upb27gmIHN6X_bSLWm5yKb5YQYpclmjvMDwW4ivZlLB2mJf_kgai5hCsYp9TFcrAW1q8wy7jAjV3/pub?gid=99733868&single=true&output=csv";
 
-    // 🔗 Your deployed Apps Script URL
-    const sheetUrl = "https://script.googleusercontent.com/a/macros/flexport.com/echo?user_content_key=AehSKLivdn9tzOtsfbf-LHI4XdSgjFG06-JBXvOPkqRNlWojB1PmbRdezDl5x99eC7c732TGE1PJPk7ka3iWh2B8aCR90tm56WGoCdhLb9par_d9IOXCfpCkrrZUIsIDNxcpw9MzFIPLf2dDM40NhDvEIMmNQ7EpvOnsYSTxCgd6h2I5bWZzRzkYE7r7XyGA4_qPF6eWNaYLN_rhJO4-kL25WLg5b6iUpR144kaaxIpidierc6T2dwaJcHuA-MBf_iBlUy97xeGP2CE0d0Rva_4CwDUrfRQ-lY7t_PY2twIqDv_ngvinbh0&lib=Moftsz8O_3FnQeQmqW7QGxSuhMqpg5Jk9&key=FORWARD25";
+function unlock(){
+  const v=document.getElementById("pw").value;
+  if(v===PASSWORD){
+    document.getElementById("login").style.display="none";
+    document.getElementById("app").style.display="block";
+    loadData();
+  } else {
+    document.getElementById("err").textContent="Wrong password";
+  }
+}
 
-    function checkPassword() {
-      const input = document.getElementById("password").value.trim();
-      const error = document.getElementById("error");
-      if (input === PASSWORD) {
-        document.getElementById("login-screen").style.display = "none";
-        document.getElementById("app").style.display = "block";
-        loadData();
-      } else {
-        error.textContent = "Incorrect password. Try again.";
-      }
-    }
+// CSV Parser → JSON
+function csvToJSON(csv){
+  const lines=csv.split("\n").filter(l=>l.trim());
+  const headers=lines[0].split(",");
+  return lines.slice(1).map(line=>{
+    const parts=line.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g) || [];
+    let obj={};
+    headers.forEach((h,i)=> obj[h.trim()] = (parts[i]||"").replace(/^"|"$/g,""));
+    return obj;
+  });
+}
 
-    function formatTime(value) {
-      if (!value || value === "TBD") return "TBD";
-      const date = new Date(value);
-      return isNaN(date.getTime()) 
-        ? value 
-        : date.toLocaleTimeString([], {hour: 'numeric', minute:'2-digit'});
-    }
+function formatDate(v){
+  let d=new Date(v);
+  return isNaN(d)?v:d.toLocaleDateString("en-US",{weekday:'long',month:'long',day:'numeric'});
+}
 
-    function formatDate(value) {
-      const d = new Date(value);
-      return isNaN(d.getTime()) 
-        ? value 
-        : d.toLocaleDateString("en-US", {weekday:'long', month:'long', day:'numeric'});
-    }
-
-    // Load JSON schedule
-    async function loadData() {
-      try {
-        const response = await fetch(sheetUrl);
-        const data = await response.json();
-
-        // Group events by date
-        const grouped = {};
-        data.forEach(evt => {
-          const day = formatDate(evt["Date"]);
-          (grouped[day] ||= []).push(evt);
-        });
-
-        const dayNav = document.getElementById("day-nav");
-        dayNav.innerHTML = "";
-        Object.keys(grouped).forEach((day, index) => {
-          const btn = document.createElement("button");
-          btn.textContent = day;
-          btn.onclick = () => showDay(day, grouped);
-          if (index === 0) btn.classList.add("active");
-          dayNav.appendChild(btn);
-        });
-
-        showDay(Object.keys(grouped)[0], grouped);
-      } catch (e) {
-        console.error("Error loading data:", e);
-        document.getElementById("schedule").innerHTML = `
-          <p style="text-align:center;color:red;">
-            Error loading schedule.<br>
-            Check console for details.
-          </p>`;
-      }
-    }
-
-    function showDay(day, grouped) {
-      const schedule = document.getElementById("schedule");
-      schedule.innerHTML = `<h2 style="text-align:center;margin-top:1.5rem;">${day}</h2>`;
-
-      // Switch active nav
-      document.querySelectorAll("nav button").forEach(btn => btn.classList.remove("active"));
-      [...document.querySelectorAll("nav button")]
-        .find(btn => btn.textContent === day).classList.add("active");
-
-      const container = document.createElement("div");
-      container.classList.add("schedule-day");
-
-      grouped[day].forEach(evt => {
-        const div = document.createElement("div");
-        div.classList.add("event");
-        div.innerHTML = `
-          <h3>${evt["Item"] || "(No Title)"}</h3>
-          <small>${formatTime(evt["Start Time"])}${evt["End Time"] ? " - " + formatTime(evt["End Time"]) : ""}</small>
-          <p><strong>Speakers:</strong> ${evt["Speaker / Support"] || "N/A"}</p>
-          <p><strong>Type:</strong> ${evt["Session Type"] || "N/A"}</p>
-          <p><strong>Location:</strong> ${evt["Location"] || "N/A"}</p>
-          <p><strong>Owner:</strong> ${evt["POC"] || "N/A"}</p>
-          <p><strong>Notes:</strong> ${evt["Cue / Notes"] || ""}</p>
-        `;
-        container.appendChild(div);
+function loadData(){
+  fetch(CSV_URL)
+    .then(r=>r.text())
+    .then(csv=>{
+      const data=csvToJSON(csv);
+      const grouped={};
+      data.forEach(evt=>{
+        if(!evt["Date"] && !evt["Item"]) return; // ignore empties
+        const day=formatDate(evt["Date"]);
+        grouped[day] = grouped[day]||[];
+        grouped[day].push(evt);
       });
+      renderNav(grouped);
+      showDay(Object.keys(grouped)[0], grouped);
+    })
+    .catch(err=>{
+      document.getElementById("schedule").innerHTML=
+        `<p style="text-align:center;color:red">Error loading schedule<br>${err}</p>`;
+    });
+}
 
-      schedule.appendChild(container);
-    }
-  </script>
+function renderNav(grouped){
+  const nav=document.getElementById("day-nav");
+  nav.innerHTML="";
+  Object.keys(grouped).forEach((day,i)=>{
+    const b=document.createElement("button");
+    b.textContent=day;
+    b.onclick=()=>showDay(day,grouped);
+    if(i===0) b.classList.add("active");
+    nav.appendChild(b);
+  });
+}
+
+function showDay(day,grouped){
+  const schedule=document.getElementById("schedule");
+  schedule.innerHTML=`<h2 style="text-align:center">${day}</h2>`;
+  document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
+  [...document.querySelectorAll("nav button")].find(b=>b.textContent===day).classList.add("active");
+  const c=document.createElement("div"); c.className="day";
+  grouped[day].forEach(evt=>{
+    let div=document.createElement("div"); div.className="event";
+    div.innerHTML=`<h3>${evt["Item"]||"(No Title)"}</h3>
+      <small>${evt["Start Time"]||""} ${evt["End Time"]? " - "+evt["End Time"]:""}</small>
+      <p><strong>Speakers:</strong> ${evt["Speaker / Support"]||"N/A"}</p>
+      <p><strong>Type:</strong> ${evt["Session Type"]||"N/A"}</p>
+      <p><strong>Location:</strong> ${evt["Location"]||"N/A"}</p>
+      <p><strong>Owner:</strong> ${evt["POC"]||"N/A"}</p>
+      <p><strong>Notes:</strong> ${evt["Cue / Notes"]||""}</p>`;
+    c.appendChild(div);
+  });
+  schedule.appendChild(c);
+}
+</script>
 </body>
 </html>
